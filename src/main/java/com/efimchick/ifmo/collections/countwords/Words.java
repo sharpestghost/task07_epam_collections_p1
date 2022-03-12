@@ -28,7 +28,7 @@ public class Words {
     }
 
     private void fillMap(String word) {
-        if (word.length() >= WordsInter.MINIMAL_WORD_LENGTH) {
+        if (word.length() >= MINIMAL_WORD_LENGTH) {
             if (!map.containsKey(word)) {
                 map.put(word, 1);
             } else {
@@ -44,7 +44,7 @@ public class Words {
                 .stream().sorted(Map.Entry.comparingByKey())
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .forEachOrdered(x -> reverseSortedMap.put(x.getKey(), x.getValue()));
-        return reverseSortedMap.entrySet().stream().filter(x -> x.getValue() >= WordsInter.MINIMAL_WORD_FREQUENCY)
+        return reverseSortedMap.entrySet().stream().filter(x -> x.getValue() >= MINIMAL_WORD_FREQUENCY)
                 .map(key -> key.getKey().toLowerCase(Locale.ROOT) + " - " + key.getValue())
                 .collect(Collectors.joining("\n"));
 
