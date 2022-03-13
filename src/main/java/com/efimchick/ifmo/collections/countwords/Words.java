@@ -26,7 +26,6 @@ public class Words {
         }
         removeAllRareWords();
         return listToString(sortAll());
-
     }
 
     private void fillMap(String word) {
@@ -39,6 +38,7 @@ public class Words {
             }
         }
     }
+
     public String listToString(Iterable<Map.Entry<String, Integer>> list) {
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, Integer> entry: list) {
@@ -46,8 +46,6 @@ public class Words {
         }
         return NEWLINE_PATTERN.matcher(builder.toString()).replaceFirst("");
     }
-
-
 
     private void removeAllRareWords() {
         Iterator<Integer> iterator = map.values().iterator();
@@ -64,6 +62,5 @@ public class Words {
         list.sort(new MapComparator());
         return list;
     }
-
 
 }
