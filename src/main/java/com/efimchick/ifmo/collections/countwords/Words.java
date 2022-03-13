@@ -1,13 +1,13 @@
 package com.efimchick.ifmo.collections.countwords;
 
 
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Words {
 
@@ -23,7 +23,8 @@ public class Words {
                 fillMap(word);
             }
         }
-        return mapToString();
+        removeAllRareWords();
+        return listToString(sortAll());
 
     }
 
@@ -37,9 +38,34 @@ public class Words {
             }
         }
     }
+    public String listToString(List<Map.Entry<String, Integer>> list) {
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry<String, Integer> entry: list) {
+            builder.append("\n").append(entry.getKey()).append(" - ").append(entry.getValue());
+        }
+        return builder.toString().replaceFirst("\n","");
+    }
 
+
+
+    private void removeAllRareWords() {
+        for (Iterator<Integer> iterator = map.values().iterator(); iterator.hasNext(); ) {
+            Integer value = iterator.next();
+            if(value < MINIMAL_WORD_FREQUENCY) {
+                iterator.remove();
+            }
+        }
+    }
+
+    private List<Map.Entry<String, Integer>> sortAll() {
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+        Collections.sort(list, new MapComparator<String, Integer>());
+        return list;
+    }
+
+    /* Lambda/streams variant
     private String mapToString() {
-        LinkedHashMap<String, Integer> reverseSortedMap = new LinkedHashMap<>();
+       LinkedHashMap<String, Integer> reverseSortedMap = new LinkedHashMap<>();
         map.entrySet()
                 .stream().sorted(Map.Entry.comparingByKey())
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
@@ -47,6 +73,6 @@ public class Words {
         return reverseSortedMap.entrySet().stream().filter(x -> x.getValue() >= MINIMAL_WORD_FREQUENCY)
                 .map(key -> key.getKey().toLowerCase(Locale.ROOT) + " - " + key.getValue())
                 .collect(Collectors.joining("\n"));
+    } */
 
-    }
 }
