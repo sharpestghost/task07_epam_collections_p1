@@ -1,19 +1,18 @@
 package com.efimchick.ifmo.collections.countwords;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Map;
 
-public class MapComparator<K extends Comparable<? super K>,
-        V extends Comparable<? super V>>
-        implements Comparator<Map.Entry<K, V>> {
+public class MapComparator implements Comparator<Map.Entry<String, Integer>>, Serializable {
 
-    public int compare(Map.Entry<K, V> a, Map.Entry<K, V> b) {
-        int cmp1 = -a.getValue().compareTo(b.getValue());
-        if (cmp1 != 0) {
-            return cmp1;
-        } else {
-            return a.getKey().compareTo(b.getKey());
+    private static final long serialVersionUID = 1;
+
+    public int compare(Map.Entry<String, Integer> that, Map.Entry<String, Integer> other) {
+        int difference = -that.getValue().compareTo(other.getValue());
+        if (difference == 0) {
+            difference = that.getKey().compareTo(other.getKey());
         }
+        return difference;
     }
-
 }

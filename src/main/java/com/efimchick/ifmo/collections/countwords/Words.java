@@ -12,11 +12,12 @@ import java.util.Map;
 public class Words {
 
     private static final String WORD_DETERMINER = "[^\\p{L}]+";
-    private final int MINIMAL_WORD_LENGTH = 4;
-    private final int MINIMAL_WORD_FREQUENCY = 10;
+    private static final String LINE_SEPARATOR = "\n";
+    private static final int MINIMAL_WORD_LENGTH = 4;
+    private static final int MINIMAL_WORD_FREQUENCY = 10;
     private final Map<String, Integer> map = new HashMap<>();
 
-    public String countWords(List<String> lines) {
+    public String countWords(Iterable<String> lines) {
         for (String s: lines) {
             String[] words = s.toLowerCase(Locale.ROOT).split(WORD_DETERMINER);
             for (String word: words) {
@@ -38,20 +39,21 @@ public class Words {
             }
         }
     }
-    public String listToString(List<Map.Entry<String, Integer>> list) {
+    public String listToString(Iterable<Map.Entry<String, Integer>> list) {
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, Integer> entry: list) {
-            builder.append("\n").append(entry.getKey()).append(" - ").append(entry.getValue());
+            builder.append(LINE_SEPARATOR).append(entry.getKey()).append(" - ").append(entry.getValue());
         }
-        return builder.toString().replaceFirst("\n","");
+        return builder.toString().replaceFirst(LINE_SEPARATOR,"");
     }
 
 
 
     private void removeAllRareWords() {
-        for (Iterator<Integer> iterator = map.values().iterator(); iterator.hasNext(); ) {
+        Iterator<Integer> iterator = map.values().iterator();
+        while (iterator.hasNext()) {
             Integer value = iterator.next();
-            if(value < MINIMAL_WORD_FREQUENCY) {
+            if (value < MINIMAL_WORD_FREQUENCY) {
                 iterator.remove();
             }
         }
@@ -59,7 +61,7 @@ public class Words {
 
     private List<Map.Entry<String, Integer>> sortAll() {
         List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
-        Collections.sort(list, new MapComparator<String, Integer>());
+        list.sort(new MapComparator());
         return list;
     }
 
