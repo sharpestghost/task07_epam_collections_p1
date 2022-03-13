@@ -9,7 +9,7 @@ public class MapComparator implements Comparator<Map.Entry<String, Integer>>, Se
     private static final long serialVersionUID = 1;
 
     public int compare(Map.Entry<String, Integer> that, Map.Entry<String, Integer> other) {
-        int difference = -that.getValue().compareTo(other.getValue());
+        int difference = other.getValue().compareTo(that.getValue());
         if (difference == 0) {
             difference = that.getKey().compareTo(other.getKey());
         }
